@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
-  <div class="jumbotron text-center">
+  <div class="jumbotron text-center" id="form-area">
     <div class="row">
       <div class="col-xs-12">
         <h1>Trie this on for size:</h1>
@@ -32,6 +32,7 @@
       <div class="col-xs-12">
         <h2 class="text-center">I found <span id="word-count"></span> words on <span id="url"></span>, and <span id="unique-word-count"></span> unique words. Use the input field below and I'll use autocomplete to guess which word you're looking for!</h2> 
         <input type="text" class="form-control" id="autocomplete-val" placeholder="enter some text here to help the trie autocomplete...">
+        <button id="reset" class='btn btn-primary pull-right'>Try with a different URL</button>
         <ul id="trie-data">
           
         </ul>
