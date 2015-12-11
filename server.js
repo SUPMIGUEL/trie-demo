@@ -12,14 +12,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/text', function(req, res) {
-  console.log('sup yall');
-  var url = 'http://www.imdb.com/title/tt1229340';
+  var url = req.query.url;
   var rawText;
 
   request(url, function(error, response, html) {
-    console.log('making request...');
     if (!error) {
-      console.log('no errors!');
       var $ = cheerio.load(html);
 
       var stripped = $('body').clone();
@@ -28,10 +25,14 @@ app.get('/text', function(req, res) {
         .text()
         .trim()
         .split(" ")
-        .map(el => el.trim().toLowerCase())
-        .filter((el, idx, arr) => el && el.search(/[^A-Z]/i) === -1 && arr.indexOf(el) === idx);
+        .map(function(el) { return el.trim().toLowerCase(); })
+        .filter(function(el) { return el && el.search(/[^A-Z]/i) === -1; });
 
-      res.send(rawText);
+      var uniqueWords = rawText.filter(function(el, idx, arr) {
+        return arr.indexOf(el) === idx;
+      });
+
+      res.send({data: uniqueWords, length: rawText.length, uniqueLength: uniqueWords.length});
     }
 
   });
