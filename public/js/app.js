@@ -7,6 +7,7 @@ $(function() {
   var $wordCount = $("#word-count");
   var $url = $("#url");
   var $uniqueWordCount = $("#unique-word-count");
+  var wordTrie = new Trie();
 
   $responseArea.hide();
 
@@ -22,15 +23,22 @@ $(function() {
 
       $wordCount.text(res.length);
       $uniqueWordCount.text(res.uniqueLength);
-      debugger;
       $url.text(formData);
 
       res.data.forEach(function(word) {
-        $trieData.append('<li>' + word + '</li>');
+        wordTrie.learn(word);
       });
       
       $responseArea.fadeIn(1000);
 
+    });
+  });
+
+  $autocompleteVal.on('keyup', function() {
+    var $this = $(this);
+    $trieData.empty();
+    wordTrie.autoComplete($this.val().trim()).forEach(function(word) {
+      $trieData.append('<li>' + word + '</li>');
     });
   });
 
